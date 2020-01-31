@@ -2,13 +2,11 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.3
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -78,6 +76,8 @@ class Ui_MainWindow(object):
         self.actionCurrent_Tab.setObjectName("actionCurrent_Tab")
         self.actionSaveAs = QtWidgets.QAction(MainWindow)
         self.actionSaveAs.setObjectName("actionSaveAs")
+        self.actionColor = QtWidgets.QAction(MainWindow)
+        self.actionColor.setObjectName("actionColor")
         self.menuOpen.addAction(self.actionNew_Tab)
         self.menuOpen.addAction(self.actionCurrent_Tab)
         self.menuFile.addAction(self.actionNew)
@@ -86,13 +86,13 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionSaveAs)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionPrint)
-        self.menuFile.addAction(self.actionExit)
         self.menuEdit.addAction(self.actionCut)
         self.menuEdit.addAction(self.actionCopy)
         self.menuEdit.addAction(self.actionpaste)
         self.menuEdit.addSeparator()
         self.menuEdit.addAction(self.actionTime_Date)
         self.menuFormat.addAction(self.actionFont)
+        self.menuFormat.addAction(self.actionColor)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuFormat.menuAction())
@@ -131,3 +131,5 @@ class Ui_MainWindow(object):
         self.actionCurrent_Tab.setShortcut(_translate("MainWindow", "Ctrl+Shift+O"))
         self.actionSaveAs.setText(_translate("MainWindow", "SaveAs"))
         self.actionSaveAs.setShortcut(_translate("MainWindow", "Ctrl+Shift+S"))
+        self.actionColor.setText(_translate("MainWindow", "Color"))
+

@@ -9,5 +9,7 @@ Can rename your file from within app itself using saveas.
 Can drictly print your work without help of any other app.
 Few features are still to add, work in progress... :)
 
+Any further suggestions to improve the app are heartly welcomed :)
 
+{PS: If you want to run the app without installing python in your machine than you need pyinstaller to convert the notepad_runnable.py file into .exe file }
 

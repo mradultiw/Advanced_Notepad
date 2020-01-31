@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, \
-    QWidget,QFileDialog, QTextEdit, QMessageBox
+    QWidget,QFileDialog, QTextEdit, QMessageBox, QFontDialog, QColorDialog
 from PyQt5 import QtGui,QtWidgets, QtCore, QtPrintSupport
 from PyQt5.QtGui import QTextCursor
 import sys
@@ -24,30 +24,45 @@ class Window(QMainWindow):
         self.createNewFile()#Default Tab        
         ### open
         self.ui.actionNew_Tab.triggered.connect(self.openInNewTab)
-        self.ui.actionCurrent_Tab.triggered.connect(self.openInCurrentTab)
-        ####        
+        self.ui.actionCurrent_Tab.triggered.connect(self.openInCurrentTab)   
         ### New        
         self.ui.actionNew.triggered.connect(self.createNewFile)
-        ###
         ### Save        
         self.ui.actionSave.triggered.connect(self.saveCurrentFile)
-        ###
         ### SaveAs        
         self.ui.actionSaveAs.triggered.connect(self.saveAsCurrentFile)
-        ###
         ### Time_Date
         self.ui.actionTime_Date.triggered.connect(self.insertTime_Date)
-        ###
         ### print
         self.ui.actionPrint.triggered.connect(self.printFile)
-        ###
+        ###Font
+        self.ui.actionFont.triggered.connect(self.fontDialogBox)
+        ###Color
+        self.ui.actionColor.triggered.connect(self.colorDialogBox)
+
         
         timer=QtCore.QTimer(self)
         timer.start(1500)
         timer.timeout.connect(self.CurrentTabNameUpdate)
         self.show()
-        
-    def closeEvent(self,event):
+    
+    def fontDialogBox(self):
+        dialog=QFontDialog()
+        dialog.setModal(True)
+        font,ok=dialog.getFont()
+        CurrentTab=self.ui.tabWidget.currentWidget()
+        if ok and font:
+            CurrentTab.findChild(QTextEdit).setFont(font)
+            
+    def colorDialogBox(self):
+        dialog=QColorDialog()
+        dialog.setModal(True)
+        col=dialog.getColor()
+        CurrentTab=self.ui.tabWidget.currentWidget()
+        if col.isValid():
+            CurrentTab.findChild(QTextEdit).setTextColor(col)
+    
+    def closeEvent(self,event=None):
         initials=[self.TabDictionary[tab][0][0] for tab in self.TabDictionary]
         if '*' in initials:
                 msg=QMessageBox()
@@ -63,7 +78,7 @@ class Window(QMainWindow):
                 msg.button(QMessageBox.Discard).clicked.connect(event.accept)
                 msg.button(QMessageBox.Yes).clicked.connect(event.ignore)
                 msg.exec_()
-        
+            
     def printFile(self,textBody):
         textBody=self.ui.tabWidget.currentWidget().findChild(QTextEdit)
         printer = QtPrintSupport.QPrinter(QtPrintSupport.QPrinter.HighResolution)
@@ -232,21 +247,23 @@ class Window(QMainWindow):
             if self.ui.tabWidget.count()==0:
                 self.InsertNewTab()
             
-        if self.TabDictionary[index][0][0]=='*':
-            filename=self.TabDictionary[index][0].strip("*")
-            msg=QMessageBox()
-            msg.setModal(True)
-            msg.setIcon(QMessageBox.Information)
-            msg.setWindowTitle("Message")
-            msg.setText(f"<b>'{filename}' Changed.<b>")
-            msg.setInformativeText("Do you want to save your changes?")
-            msg.setStandardButtons(QMessageBox.Save|QMessageBox.Cancel|QMessageBox.Discard)
-            msg.setDefaultButton(QMessageBox.Save)
-            msg.buttonClicked.connect(masbtn)
-            msg.exec_()
-        else:
-            rmtab()
-    
+        try:
+            if self.TabDictionary[index][0][0]=='*':
+                filename=self.TabDictionary[index][0].strip("*")
+                msg=QMessageBox()
+                msg.setModal(True)
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle("Message")
+                msg.setText(f"<b>'{filename}' Changed.<b>")
+                msg.setInformativeText("Do you want to save your changes?")
+                msg.setStandardButtons(QMessageBox.Save|QMessageBox.Cancel|QMessageBox.Discard)
+                msg.setDefaultButton(QMessageBox.Save)
+                msg.buttonClicked.connect(masbtn)
+                msg.exec_()
+            else:
+                rmtab()
+        except:
+            pass
 def main(system_string):
     App=QApplication(system_string)
     window=Window()
